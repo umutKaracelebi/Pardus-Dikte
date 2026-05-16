@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name={{name}}
+Comment=Sesli Yazı Asistanı - Voice-to-Text Assistant
+GenericName=Voice-to-Text Assistant
+Exec={{exec}}
+Icon={{icon}}
+Terminal=false
+Type=Application
+Categories={{categories}}
+Keywords=dikte;stt;speech;ses;yazı;
+StartupWMClass=pardus-dikte
