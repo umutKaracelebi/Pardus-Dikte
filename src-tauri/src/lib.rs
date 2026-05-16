@@ -627,21 +627,14 @@ pub fn run() {
                 let win_icon = Image::from_bytes(include_bytes!("../icons/128x128.png")).expect("icon");
                 let _ = window.set_icon(win_icon);
                 
-                // Wayland CSD fix: resize window slightly to force decoration button initialization
+                // Wayland CSD fix: maximize then unmaximize to force decoration button initialization
+                // This mimics the double-click workaround
                 let w_fix = window.clone();
                 std::thread::spawn(move || {
-                    std::thread::sleep(std::time::Duration::from_millis(500));
-                    if let Ok(size) = w_fix.inner_size() {
-                        let _ = w_fix.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-                            width: size.width + 1,
-                            height: size.height,
-                        }));
-                        std::thread::sleep(std::time::Duration::from_millis(50));
-                        let _ = w_fix.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-                            width: size.width,
-                            height: size.height,
-                        }));
-                    }
+                    std::thread::sleep(std::time::Duration::from_millis(600));
+                    let _ = w_fix.maximize();
+                    std::thread::sleep(std::time::Duration::from_millis(100));
+                    let _ = w_fix.unmaximize();
                 });
                 
                 let w = window.clone();
