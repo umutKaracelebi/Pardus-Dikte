@@ -534,7 +534,7 @@ echo "OK"
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Fix: Wayland CSD window controls (close/min/max) not responding initially
-    // This is a known WebKitGTK bug on Wayland. Forcing XWayland completely resolves this.
+    // This is a known WebKitGTK bug on Wayland. Forcing XWayland completely resolves this permanently.
     if std::env::var("WAYLAND_DISPLAY").is_ok() {
         std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
         std::env::set_var("GDK_BACKEND", "x11");

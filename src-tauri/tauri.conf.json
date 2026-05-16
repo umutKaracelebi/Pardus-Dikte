@@ -15,7 +15,9 @@
         "label": "main",
         "title": "Pardus Dikte",
         "width": 900,
-        "height": 700
+        "height": 700,
+        "minWidth": 600,
+        "minHeight": 500
       }
     ],
     "security": {
