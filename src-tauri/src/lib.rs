@@ -534,9 +534,10 @@ echo "OK"
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Fix: Wayland CSD window controls (close/min/max) not responding initially
-    // This is a known WebKitGTK bug on Wayland
+    // This is a known WebKitGTK bug on Wayland. Forcing XWayland completely resolves this.
     if std::env::var("WAYLAND_DISPLAY").is_ok() {
         std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+        std::env::set_var("GDK_BACKEND", "x11");
     }
     
     let initial_settings = load_settings();
@@ -626,16 +627,6 @@ pub fn run() {
             if let Some(window) = app.get_webview_window("main") {
                 let win_icon = Image::from_bytes(include_bytes!("../icons/128x128.png")).expect("icon");
                 let _ = window.set_icon(win_icon);
-                
-                // Wayland CSD fix: maximize then unmaximize to force decoration button initialization
-                // This mimics the double-click workaround
-                let w_fix = window.clone();
-                std::thread::spawn(move || {
-                    std::thread::sleep(std::time::Duration::from_millis(600));
-                    let _ = w_fix.maximize();
-                    std::thread::sleep(std::time::Duration::from_millis(100));
-                    let _ = w_fix.unmaximize();
-                });
                 
                 let w = window.clone();
                 window.on_window_event(move |event| {
